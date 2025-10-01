@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Assy Cap per People</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <nav class="sidebar">
+    <header>
+        <div class="profile-container">
+        <img id="profileImage">
+        <h4 class="name" id="profileName">Nama Pengguna</h4>
+        <p class="email" id="profileEmail">email@pengguna.com</p>
+        <label for="avatarInput" class="upload-btn">Ganti Foto</label>
+        <input type="file" id="avatarInput" accept="image/png, image/jpeg" hidden>
+        </div>
+    </header>
+    <div id="editProfileModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-body">
+            <form id="editProfileForm">
+                </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="editProfileForm" class="btn-save">Simpan Perubahan</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-paint-roll icon'></i>
+                        <span class="text nav-text">Assy Cap</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-assy-cap.html">Dashboard</a></li>
+                        <li><a href="master-people.html">Master People</a></li>
+                        <li><a href="tambah-data.html">Add Data</a></li>
+                        <li><a href="laporan-assy-cap-people.html">Laporan AssyCap</a></li>
+                        <li><a href="laporan-assy-cap-harian-people.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+
+                <!-- <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-color-fill icon'></i>
+                        <span class="text nav-text">THINNER</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-thinner.html">Dashboard</a></li>
+                        <li><a href="master-thinner.html">Master Thinner</a></li>
+                        <li><a href="tambah-thinner.html">Add Thinner</a></li>
+                        <li><a href="thinner-by-name-dashboard.html">Laporan Thinner</a></li>
+                        <li><a href="laporan-thinner-detail.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-car-mechanic icon'></i>
+                        <span class="text nav-text">AEROX</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-aerox.html">Dashboard</a></li>
+                        <li><a href="master-aerox.html">Master Aerox</a></li>
+                        <li><a href="tambah-aerox.html">Add Aerox</a></li>
+                        <li><a href="aerox-by-name-dashboard.html">Laporan Aerox</a></li>
+                        <li><a href="laporan-aerox-detail.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-wrench icon'></i>
+                        <span class="text nav-text">DEFECTIVE PART</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-part-jatuh.html">Dashboard</a></li>
+                        <li><a href="master-part.html">Master Part</a></li>
+                        <li><a href="tambah-part.html">Add Part</a></li>
+                        <li><a href="part-by-name-dashboard.html">Laporan Bulanan</a></li>
+                        <li><a href="laporan-part-jatuh-detail.html">Laporan Harian</a></li>
+                        <li><a href="laporan-per-leader.html">Laporan Per Leader</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+            <li class="logout">
+                <a href="index.html">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+        </div>
+    </div>
+    </nav>
+
+    <section class="main-content">
+        <i class='bx bx-menu' id="sidebar-toggle"></i>
+        <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h1>Laporan Hasil Assy Cap</h1>
+            <div class="filter-wrapper" style="display: flex; align-items: center; gap: 1rem;">
+                <label for="monthFilter">Show data month :</label>
+                <select id="monthFilter" class="form-group"></select>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header" style="text-align: center; margin-bottom: 1rem;">
+                <h3 id="totalQtyText">Total Hasil Bulan Ini: Menghitung...</h3>
+                <button id="downloadChartButton" class="submit-button" style="width: auto; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                    <i class='bx bx-download'></i> Download Gambar
+                </button>
+            </div>
+            <h4 id="chartTitle" style="text-align: center; margin-bottom: 1.5rem;">Peringkat Hasil Assy <caption></caption></h4>
+            <div class="chart-wrapper" style="height: 600px; position: relative;">
+                <canvas id="byPeopleChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="laporan-assy-cap-people.js"></script> </body>
+</html>

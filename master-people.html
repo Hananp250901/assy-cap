@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master People</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body class="form-full-screen">
+    <nav class="sidebar">
+        </nav>
+    <section class="main-content">
+        <a href="dashboard-assy-cap.html" class="back-button"><i class='bx bx-arrow-back'></i>Kembali ke Dashboard</a>
+        <div class="master-cat-container">
+            <div class="form-container">
+                <h2>Add People</h2>
+                <form id="addPeopleForm">
+                    <div class="form-group">
+                        <label for="namaPeople">Name</label>
+                        <input type="text" id="namaPeople" placeholder="Contoh: Hanan Prianto" required>
+                    </div>
+                    <button type="submit" class="submit-button">Simpan</button>
+                </form>
+            </div>
+
+            <div class="log-container">
+                <h2>List of people</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="peopleTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="master-people.js"></script>
+
+</body>
+</html>

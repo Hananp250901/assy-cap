@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Assy Cap</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .action-btn { padding: 5px 10px; border: none; border-radius: 5px; color: white; cursor: pointer; margin-right: 5px; font-size: 14px; }
+        .edit-btn { background-color: #f0ad4e; }
+        .edit-btn:hover { background-color: #ec971f; }
+        .delete-btn { background-color: #d9534f; }
+        .delete-btn:hover { background-color: #c9302c; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; }
+        .close-button { font-size: 24px; cursor: pointer; border: none; background: none; }
+        .modal-body form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .modal-body form input, .modal-body form select { width: 100%; padding: 8px 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; background-color: white; font-size: 14px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%2...%3C/svg%3E'); background-repeat: no-repeat; background-position: right 10px top 50%; background-size: 12px auto; }
+        .modal-body form input[type="date"] { background-image: none; }
+        .modal-footer { text-align: right; }
+        .modal-footer button { padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; }
+        .btn-save { background-color: #337ab7; color: white; }
+        .btn-cancel { background-color: #f4f4f4; color: #333; margin-right: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+    <header>
+        <div class="profile-container">
+        <img id="profileImage">
+        <h4 class="name" id="profileName">Nama Pengguna</h4>
+        <p class="email" id="profileEmail">email@pengguna.com</p>
+        <label for="avatarInput" class="upload-btn">Ganti Foto</label>
+        <input type="file" id="avatarInput" accept="image/png, image/jpeg" hidden>
+        </div>
+    </header>
+    <div id="editProfileModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-body">
+            <form id="editProfileForm">
+                </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="editProfileForm" class="btn-save">Simpan Perubahan</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <ul class="menu-links">
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-paint-roll icon'></i>
+                        <span class="text nav-text">Assy Cap</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-assy-cap.html">Dashboard</a></li>
+                        <li><a href="master-people.html">Master People</a></li>
+                        <li><a href="tambah-data.html">Add Data</a></li>
+                        <li><a href="laporan-assy-cap-people.html">Laporan AssyCap</a></li>
+                        <li><a href="laporan-assy-cap-harian-people.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+
+                <!-- <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-color-fill icon'></i>
+                        <span class="text nav-text">THINNER</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-thinner.html">Dashboard</a></li>
+                        <li><a href="master-thinner.html">Master Thinner</a></li>
+                        <li><a href="tambah-thinner.html">Add Thinner</a></li>
+                        <li><a href="thinner-by-name-dashboard.html">Laporan Thinner</a></li>
+                        <li><a href="laporan-thinner-detail.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-car-mechanic icon'></i>
+                        <span class="text nav-text">AEROX</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-aerox.html">Dashboard</a></li>
+                        <li><a href="master-aerox.html">Master Aerox</a></li>
+                        <li><a href="tambah-aerox.html">Add Aerox</a></li>
+                        <li><a href="aerox-by-name-dashboard.html">Laporan Aerox</a></li>
+                        <li><a href="laporan-aerox-detail.html">Laporan Harian</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-link dropdown">
+                    <div class="dropdown-toggle">
+                        <i class='bx bxs-wrench icon'></i>
+                        <span class="text nav-text">DEFECTIVE PART</span>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="dashboard-part-jatuh.html">Dashboard</a></li>
+                        <li><a href="master-part.html">Master Part</a></li>
+                        <li><a href="tambah-part.html">Add Part</a></li>
+                        <li><a href="part-by-name-dashboard.html">Laporan Bulanan</a></li>
+                        <li><a href="laporan-part-jatuh-detail.html">Laporan Harian</a></li>
+                        <li><a href="laporan-per-leader.html">Laporan Per Leader</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+        </div>
+
+        <div class="bottom-content">
+            <li class="logout">
+                <a href="index.html">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+        </div>
+    </div>
+    </nav>
+    <section class="main-content">
+        <i class='bx bx-menu' id="sidebar-toggle"></i>
+        <div class="header-content">
+            <h1>Dashboard Monitoring</h1>
+            <div class="filter-wrapper">
+                <label for="monthFilter">Show Date Month:</label>
+                <select id="monthFilter"></select>
+            </div>
+            <a href="tambah-data.html" class="action-button">
+                <i class='bx bx-plus'></i>
+                Add data
+            </a>
+        </div>
+
+        </div>
+        <br>
+        <div class="chart-container">
+            <div class="chart-header">
+                <h4 id="dailyChartTitle">Monitoring Hasil Assy Cap</h4>
+                <div id="dailyChartTotal" style="font-weight: bold; font-size: 1.1em; margin-top: 5px;"></div>
+                <button id="downloadDailyChartButton" class="action-button"><i class='bx bx-download'></i>Download Gambar</button>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="dailyUsageChart"></canvas>
+            </div>
+        </div>
+
+        <div class="log-container">
+            <div class="log-header">
+                <h3><i class='bx bx-history'></i> Log Input Terakhir</h3>
+                <div class="search-and-actions">
+                    <button id="downloadCsvButton" class="action-button">
+                        <i class='bx bx-download'></i>
+                        Download CSV
+                    </button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Shift</th>
+                        <th>People</th>
+                        <th>Part Name</th>
+                        <th>Part Number</th>
+                        <th>Qty (pcs)</th>
+                        <th>Action</th>
+                    </tr>
+                        <tr>
+                            <th><input type="text" placeholder="Filter tanggal..." data-filter="tanggal" class="table-filter-input"></th>
+                            <th><input type="text" placeholder="Filter shift..." data-filter="shift" class="table-filter-input"></th>
+                            <th><input type="text" placeholder="Filter part number..." data-filter="part_number" class="table-filter-input"></th>
+                            <th><input type="text" placeholder="Filter nama..." id="logSearchInput" data-filter="nama" class="table-filter-input"></th>
+                            <th><input type="text" placeholder="Filter qty..." data-filter="qty" class="table-filter-input"></th>
+                            <th></th>
+                        </tr>
+                </thead>
+                <tbody id="logTableBody"></tbody>
+            </table>
+            </div>
+            <div class="pagination-controls">
+                <button id="togglePaginationButton" class="page-button">Show All</button>
+                <button id="prevPageButton" class="page-button" disabled>&laquo; Prev</button>
+                <span id="pageInfo">Page 1 of 1</span>
+                <button id="nextPageButton" class="page-button" disabled>Next &raquo;</button>
+            </div>
+        </div>
+    </section>
+
+
+<div id="editModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Data Assy Cap</h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                
+                <label for="editTanggal">Tanggal</label>
+                <input type="date" id="editTanggal" required>
+                
+                <label for="editShift">Shift</label>
+                <select id="editShift" required>
+                    <option value="1">Shift 1</option>
+                    <option value="2">Shift 2</option>
+                    <option value="3">Shift 3</option>
+                </select>
+
+                <label for="editPeople">People</label>
+                <select id="editPeople" required></select>
+
+                <label for="editPartName">Part Name</label>
+                <select id="editPartName" required></select>
+                
+                <label for="editPartNumber">Part Number</label>
+                <input type="text" id="editPartNumber" readonly>
+                
+                <label for="editQty">Qty (Pcs)</label>
+                <input type="number" id="editQty" required>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="cancelButton" class="btn-cancel">Batal</button>
+            <button type="submit" form="editForm" class="btn-save">Simpan Perubahan</button>
+        </div>
+    </div>
+</div>
+
+    <footer class="main-footer">
+    <p><i>© 2025 Dashboard Painting — @hanandvlpr</i></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="dashboard-assy-cap.js"></script>
+    <script src="sidebar.js"></script>
+
+</body>
+</html>

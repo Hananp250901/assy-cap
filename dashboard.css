@@ -1,0 +1,619 @@
+/* ----- Import Font & Variabel Global ----- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --blue-primary: #66a6ff;
+    --blue-dark: #4a90e2;
+    --grey-light: #4a90e2;
+    --text-color: #707070;
+    --sidebar-bg: #ffffff;
+    --body-bg: var(--grey-light);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ================================================= */
+/* ===== BAGIAN 1: STYLE HALAMAN LOGIN ===== */
+/* ================================================= */
+
+.login-page-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #72EDF2 0%, #5151E5 100%);
+    overflow: hidden;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    text-align: center;
+    color: #fff;
+    z-index: 10;
+}
+.login-container h1 {
+    margin-bottom: 25px;
+}
+.login-container .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.login-container .input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.login-container .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 16px;
+}
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.login-container .rainbow-active {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+    background-size: 200% auto;
+    animation: rainbow-flow 1.5s linear infinite;
+}
+@keyframes rainbow-flow {
+    100% { background-position: -200% center; }
+}
+.login-container .error-message {
+    color: #ff4d4d;
+    margin-top: 15px;
+    height: 20px;
+}
+
+
+/* ================================================= */
+/* ===== BAGIAN 2: STYLE HALAMAN DASHBOARD ===== */
+/* ================================================= */
+
+.dashboard-body {
+    background-color: var(--body-bg);
+    display: flex;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    position: fixed; top: 0; left: 0; height: 100%; width: 250px;
+    padding: 10px 14px; background: var(--sidebar-bg);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); z-index: 100;
+    transition: all 0.3s ease;
+}
+/* Tombol toggle */
+#sidebar-toggle {
+  display: inline-block;   /* selalu muncul */
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 15px;
+  color: #333;
+  background: none;
+  border: none;
+}
+
+/* Desktop toggle */
+.sidebar.collapsed {
+  left: -250px; /* sembunyikan sidebar */
+}
+
+.sidebar.collapsed ~ .main-content {
+  left: 0;
+  width: 100%;
+}
+.sidebar header {
+    position: relative; padding-bottom: 15px; border-bottom: 1px solid var(--grey-light);
+}
+.sidebar .image-text .image {
+    min-width: 60px; border-radius: 6px; display: flex;
+    align-items: center; justify-content: center; font-size: 28px; color: var(--blue-dark);
+}
+.sidebar .image-text .logo-text { display: flex; flex-direction: column; }
+.sidebar header .logo-text .name {
+    margin-top: 2px; font-size: 18px; font-weight: 600; color: var(--blue-dark);
+}
+.sidebar header .logo-text .profession {
+    font-size: 14px; margin-top: -2px; display: block; color: var(--grey-dark);
+}
+.sidebar .image-text { display: flex; align-items: center; }
+.sidebar .menu-bar {
+    flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;
+}
+.sidebar li .icon {
+    min-width: 50px; font-size: 20px; display: flex; align-items: center;
+    justify-content: center; color: var(--grey-dark); transition: all 0.3s ease;
+}
+.sidebar li .text {
+    font-size: 16px; font-weight: 500; color: var(--text-color); transition: all 0.3s ease;
+}
+.sidebar .menu { margin-top: 20px; }
+
+/* --- DROPDOWN SIDEBAR --- */
+.sidebar li.dropdown { height: auto; display: block; margin-top: 10px; }
+.dropdown-toggle {
+    display: flex; align-items: center; width: 100%; height: 50px; padding: 0 10px;
+    border-radius: 10px; cursor: pointer; transition: all 0.3s ease; position: relative;
+}
+.dropdown-toggle .arrow { position: absolute; right: 15px; transition: transform 0.3s ease; }
+.submenu {
+    list-style: none; max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease-in-out; background-color: #fdfdfd;
+    border-radius: 6px; margin-top: 5px;
+}
+.sidebar .submenu li { height: 40px; }
+.sidebar .submenu a {
+    text-decoration: none; display: flex; align-items: center; color: var(--text-color);
+    padding-left: 60px; height: 100%; border-radius: 6px;
+}
+.dropdown-toggle:hover { background-color: var(--blue-primary); }
+.dropdown-toggle:hover .icon, .dropdown-toggle:hover .text, .dropdown-toggle:hover .arrow { color: #fff; }
+.submenu a:hover { background-color: #f0f5ff; }
+.nav-link.active .submenu { max-height: 500px; }
+.nav-link.active .dropdown-toggle { background-color: var(--blue-primary); }
+.nav-link.active .dropdown-toggle .arrow { transform: rotate(180deg); }
+.nav-link.active .dropdown-toggle .icon, .nav-link.active .dropdown-toggle .text, .nav-link.active .dropdown-toggle .arrow { color: #fff; }
+.sidebar .bottom-content .logout { margin-top: 20px; }
+.sidebar .bottom-content .logout a { text-decoration: none; display: flex; align-items: center; border-radius: 10px; height: 50px; }
+
+/* --- KONTEN UTAMA --- */
+.main-content {
+    position: relative; left: 250px; min-height: 100vh;
+    width: calc(100% - 250px); background-color: var(--body-bg); padding: 30px;
+    transition: all 0.3s ease;
+}
+.header-content {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; flex-wrap: wrap; gap: 15px;
+}
+.header-content h1 { color: #ffffff; font-size: 28px; }
+
+/* --- CHART --- */
+.chart-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* Tentukan tinggi tetap di sini */
+}
+.chart-header {
+    flex-shrink: 0; display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 15px;
+}
+.chart-header h4 { font-size: 18px; font-weight: 600; color: #333; }
+.chart-wrapper {
+    flex-grow: 1; position: relative; width: 100%;
+}
+.chart-wrapper canvas {
+    position: absolute; top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+}
+
+/* --- LOG CONTAINER & TABLE --- */
+.log-container {
+    margin-top: 30px; background-color: #fff; padding: 25px;
+    border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.log-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+}
+.log-header h3 {
+    font-size: 18px; font-weight: 600; color: #333;
+    display: flex; align-items: center; gap: 10px; margin: 0;
+}
+.log-header h3 i { font-size: 24px; }
+.table-wrapper { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+table th, table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+table th {
+    background-color: #f9fafb; font-size: 14px;
+    font-weight: 600; color: #666;
+}
+table tbody tr:nth-child(odd) { background-color: #f9fafb; }
+table tbody tr:hover { background-color: #f0f5ff; }
+
+/* --- FILTER, SEARCH, BUTTONS --- */
+.filter-wrapper {
+    display: flex; align-items: center; gap: 10px;
+    margin-left: auto; margin-right: 20px;
+}
+.filter-wrapper label { font-size: 15px; font-weight: 500; color: #555; }
+#monthFilter {
+    padding: 8px 12px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 15px; background-color: #fff;
+}
+.search-and-actions { display: flex; align-items: center; gap: 15px; }
+.search-wrapper { position: relative; }
+.search-wrapper i {
+    position: absolute; left: 15px; top: 50%;
+    transform: translateY(-50%); color: #999; font-size: 20px;
+}
+/* #logSearchInput {
+    padding: 10px 15px 10px 45px; border: 1px solid #ddd;
+    border-radius: 8px; width: 300px; font-size: 15px;
+} */
+.action-button {
+    text-decoration: none; background-color: var(--blue-primary); color: #fff;
+    padding: 10px 20px; border-radius: 8px; font-weight: 500; font-size: 15px;
+    display: inline-flex; align-items: center; gap: 8px;
+    border: none; cursor: pointer;
+}
+.action-button:hover { background-color: var(--blue-dark); }
+.pagination-controls {
+    display: flex; justify-content: flex-end; align-items: center;
+    gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f0f0;
+}
+.page-button {
+    padding: 8px 15px; border: 1px solid #ddd; background-color: #fff;
+    border-radius: 6px; cursor: pointer; font-weight: 500;
+}
+.page-button:hover:not(:disabled) { background-color: #f5f5f5; }
+.page-button:disabled { cursor: not-allowed; opacity: 0.5; }
+#pageInfo { font-size: 14px; color: #555; font-weight: 500; }
+#togglePaginationButton { margin-right: auto; background-color: #f0f0f0; }
+.pagination-controls.hidden .page-button:not(#togglePaginationButton),
+.pagination-controls.hidden #pageInfo { display: none; }
+
+/* --- STYLE UNTUK FORM --- */
+body.form-full-screen .sidebar { display: none; }
+body.form-full-screen .main-content {
+    left: 0; width: 100%; padding: 20px 30px;
+    display: flex; flex-direction: column; align-items: center;
+}
+body.form-full-screen .form-container {
+    width: 100%;
+    max-width: 600px; /* <-- HAPUS BARIS INI ATAU SELURUH BLOK */
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.back-button {
+    align-self: flex-start; text-decoration: none; color: black;
+    font-weight: 500; display: inline-flex; align-items: center;
+    gap: 8px; margin-bottom: 20px;
+}
+.back-button i { font-size: 22px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+.form-group input, .form-group select {
+    width: 100%; padding: 12px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 16px; font-family: 'Poppins', sans-serif;
+}
+.submit-button {
+    width: 100%; padding: 15px; border: none; border-radius: 8px;
+    background-color: var(--blue-primary); color: white;
+    font-size: 18px; font-weight: 600; cursor: pointer;
+}
+.submit-button:hover { background-color: var(--blue-dark); }
+.modal-animated {
+    position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); display: flex; justify-content: center;
+    align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
+}
+.modal-animated.show { opacity: 1; visibility: visible; }
+.modal-animated-content {
+    background-color: #fff; padding: 30px; border-radius: 15px;
+    text-align: center; width: 300px; transform: scale(0.7); transition: transform 0.3s ease;
+}
+.modal-animated.show .modal-animated-content { transform: scale(1); }
+.modal-animated-content h4 { color: #4CAF50; font-size: 22px; margin: 15px 0 5px 0; }
+.modal-animated-content p { color: #666; margin: 0; }
+.success-icon-wrapper { margin: 0 auto; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 50%; background-color: #e6ffe6; }
+.success-icon { width: 40px; height: 40px; display: block; stroke-width: 3; stroke: #5cb85c; }
+.success-icon__check { stroke-dasharray: 48; stroke-dashoffset: 48; animation: success-stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards; }
+@keyframes success-stroke { 100% { stroke-dashoffset: 0; } }
+.master-cat-container {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 30px;
+    align-items: flex-start; width: 100%;
+}
+.delete-button {
+    background-color: #ff4d4d; color: white; border: none;
+    padding: 8px 12px; border-radius: 6px; cursor: pointer;
+}
+.delete-button:hover { background-color: #d93636; }
+
+/* --- RESPONSIVE --- */
+/* #sidebar-toggle { display: none; font-size: 28px; cursor: pointer; margin-bottom: 20px; color: #555; } */
+@media (max-width: 768px) {
+    .sidebar { left: -250px; }
+    .sidebar.active { left: 0; }
+    .main-content { left: 0; width: 100%; }
+    #sidebar-toggle { display: block; }
+    
+    /* PERBAIKAN: Header content dengan tata letak yang lebih baik */
+    .header-content { 
+        flex-direction: row; 
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    /* PERBAIKAN: Filter wrapper dengan lebar yang sesuai */
+    .filter-wrapper { 
+        margin-left: 0; 
+        width: auto;
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    #monthFilter { 
+        width: 100%; 
+        max-width: 200px;
+    }
+    
+    /* PERBAIKAN: Tombol action dengan ukuran yang sesuai */
+    .header-content .action-button { 
+        width: auto; 
+        justify-content: flex-start;
+        min-width: 120px;
+    }
+    
+    .log-header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    
+    .search-and-actions { 
+        width: 100%; 
+        flex-direction: column; 
+    }
+    
+    #logSearchInput { 
+        width: 100%; 
+    }
+    
+    .search-and-actions .action-button { 
+        width: 100%; 
+        justify-content: center; 
+    }
+    
+    .master-cat-container { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .main-content {
+        /* Mengurangi padding di mobile agar tidak terlalu sempit */
+        padding: 10px;
+    }
+
+    .chart-container {
+        /* Mengurangi padding di dalam kotak chart */
+        padding: 10px;
+    }
+
+    .chart-wrapper {
+        /* PENTING: Memberi tinggi minimum agar canvas grafik punya ruang */
+        min-height: 350px;
+        position: relative; /* Wajib agar Chart.js bisa menyesuaikan ukuran */
+    }
+
+    .log-container .table-wrapper {
+        /* Membuat tabel bisa di-scroll ke samping jika tidak muat */
+        overflow-x: auto;
+    }
+    
+    /* PERBAIKAN TAMBAHAN: Style khusus untuk tombol logout */
+    .logout-button {
+        order: 3; /* Pastikan tombol logout di posisi yang tepat */
+        margin-left: auto; /* Dorong ke kanan */
+        white-space: nowrap; /* Hindari teks terpotong */
+    }
+}
+
+/* Perbaikan untuk Tampilan Choices.js */
+
+/* 1. Memperbaiki lebar dropdown agar tidak terlalu sempit */
+.choices__list--dropdown,
+.choices__list[aria-expanded] {
+    min-width: 350px; /* Atur lebar minimal dropdown agar cukup */
+    word-break: normal; /* Pastikan pemotongan kata normal */
+}
+
+/* 2. Mencegah teks di dalam setiap pilihan agar tidak terpotong ke bawah */
+.choices__item--choice {
+    white-space: nowrap; /* Paksa teks untuk tetap dalam satu baris */
+}
+
+/* --- FILTER INPUT DALAM HEADER TABEL --- */
+.table-filter-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 13px;
+    background-color: #fafafa;
+    transition: all 0.2s ease;
+}
+
+.table-filter-input:focus {
+    background-color: #fff;
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 0 2px rgba(102, 166, 255, 0.15);
+    outline: none;
+}
+
+.table-filter-input::placeholder {
+    color: #999;
+    font-size: 12px;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 14px;
+}
+.edit-btn {
+    background-color: #f0ad4e; /* Kuning */
+}
+.edit-btn:hover {
+    background-color: #ec971f;
+}
+.delete-btn {
+    background-color: #d9534f; /* Merah */
+}
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+.sidebar .menu-links .nav-link > a {
+    text-decoration: none; /* Menghilangkan garis bawah */
+    color: var(--text-color); /* Menggunakan variabel warna teks yang sudah ada */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0; /* Menyamakan jarak atas-bawah dengan menu lain */
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+/* Menambahkan efek hover agar sama seperti menu lain */
+.sidebar .menu-links .nav-link > a:hover {
+    background-color: var(--primary-color);
+}
+
+.sidebar .menu-links .nav-link > a:hover .icon,
+.sidebar .menu-links .nav-link > a:hover .text {
+    color: var(--sidebar-color);
+}
+
+.sidebar .profile-container {
+    padding: 20px 10px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0; /* Garis pemisah opsional */
+}
+
+.sidebar .profile-details img {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #eee;
+}
+
+.sidebar .profile-details .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333; /* Sesuaikan dengan warna teks Anda */
+    margin: 0;
+}
+
+.sidebar .profile-details .email {
+    font-size: 12px;
+    color: #888; /* Sesuaikan dengan warna teks Anda */
+    margin: 5px 0 0 0;
+}
+
+/* Sembunyikan profil saat sidebar diciutkan (collapsed) */
+.sidebar.collapsed .profile-container {
+    display: none;
+}
+/* Styling untuk Tombol Edit */
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling untuk Modal Edit */
+.hidden { display: none; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+.modal-header h2 { margin: 0; font-size: 22px; }
+.close-button { font-size: 28px; cursor: pointer; border: none; background: none; }
+.modal-body .form-group { margin-bottom: 15px; }
+.modal-body label { display: block; margin-bottom: 5px; font-weight: bold; }
+.modal-body input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+.modal-footer { text-align: right; margin-top: 25px; }
+.modal-footer button { padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; }
+.btn-save { background-color: #28a745; color: white; }
+.btn-cancel { background-color: #f4f4f4; color: #333; margin-right: 10px; }
+
+.profile-container {
+  text-align: center;
+  padding: 15px 10px;
+}
+
+.profile-container img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-container .name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px 0 2px 0;
+}
+
+.profile-container .email {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #4a90e2;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.upload-btn:hover {
+  background-color: #357ABD;
+}
+.hidden {
+    display: none !important;
+}
