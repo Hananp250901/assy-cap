@@ -121,13 +121,6 @@ addDataForm.addEventListener('submit', async (e) => {
         const successModal = document.getElementById('successModal');
         successModal.classList.add('show');
         
-        // =================================================================
-        // PERUBAHAN DI SINI: Hanya mereset field yang diperlukan
-        // =================================================================
-        
-        // 1. Reset dropdown People
-        $('#peopleName').val(null).trigger('change');
-        
         // 2. Reset dropdown Part Name (ini juga akan mengosongkan Part Number)
         $('#partName').val(null).trigger('change');
         
