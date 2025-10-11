@@ -131,7 +131,7 @@ const renderChart = (chartData) => {
             datasets: [{
                 label: 'Total Hasil (Pcs)',
                 data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                backgroundColor: 'rgba(0, 94, 255, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -153,7 +153,7 @@ const renderChart = (chartData) => {
                     anchor: 'end',
                     align: 'end',
                     formatter: (value) => value.toLocaleString('id-ID'),
-                    color: '#34495e'
+                    color: '#000000ff'
                 }
             },
             scales: {
@@ -162,6 +162,14 @@ const renderChart = (chartData) => {
                     title: {
                         display: true,
                         text: 'Total Kuantitas (Pcs)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: '#000000', // Mengatur warna label nama menjadi hitam
+                        font: {
+                            weight: '500' // Opsional: membuat tulisan sedikit lebih tebal
+                        }
                     }
                 }
             }
