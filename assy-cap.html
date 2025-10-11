@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Assy Cap</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 20px; 
+            background-color: #f4f4f9; 
+            color: #333;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: auto; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+        .form-input { 
+            border: 1px solid #ddd; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 25px; 
+        }
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+        }
+        .form-grid div { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        label { 
+            margin-bottom: 5px; 
+            font-weight: 600; 
+            font-size: 0.9em; 
+            color: #555;
+        }
+        input, select, button { 
+            padding: 10px; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            width: 100%; 
+            box-sizing: border-box; 
+            font-size: 1em;
+        }
+        button { 
+            background-color: #007bff; 
+            color: white; 
+            cursor: pointer; 
+            border: none; 
+            font-weight: bold; 
+            transition: background-color 0.2s;
+        }
+        button:hover { 
+            background-color: #0056b3; 
+        }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        .header-buttons { 
+            display: flex; 
+            gap: 10px; 
+        }
+        .part-entry { 
+            margin-top: 20px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            display: grid; 
+            grid-template-columns: 2.5fr 1fr 1fr auto; 
+            gap: 15px; 
+            align-items: flex-end; 
+        }
+        #add-part-btn { 
+            background-color: #28a745; 
+        }
+        #add-part-btn:hover { 
+            background-color: #218838; 
+        }
+        #save-all-btn { 
+            margin-top: 20px; 
+            padding: 12px; 
+            font-size: 1.1em; 
+            background-color: #007bff; 
+        }
+        #save-all-btn:hover { 
+            background-color: #054c98; 
+        }
+
+        /* Style untuk Daftar Part Sementara */
+        #parts-list-container { 
+            margin-top: 20px; 
+        }
+        .part-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px; 
+            background: #f9f9f9; 
+            border: 1px solid #eee; 
+            border-radius: 4px; 
+            margin-bottom: 8px; 
+        }
+        .part-item span { 
+            flex-grow: 1; 
+        }
+        .part-item button { 
+            width: auto; 
+            background-color: #6c757d; 
+            padding: 5px 10px; 
+            font-size: 0.8em; 
+        }
+        
+        /* Style untuk Tabel Dashboard */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+            margin-bottom: 25px; 
+            font-size: 0.9em; 
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: center; 
+        }
+        th { 
+            background-color: #f2f2f2; 
+            font-weight: 600;
+        }
+        .total-row td { 
+            font-weight: bold; 
+            background-color: #e9e9e9; 
+        }
+        
+        @media print {
+            body { margin: 0; }
+            .form-input, .print-hide, #parts-list-container, .header h1 { display: none; }
+            .container { box-shadow: none; border: none; }
+        }
+        /* === CSS UNTUK TAMPILAN MOBILE === */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .form-grid, .part-entry {
+        grid-template-columns: 1fr; /* Semua input akan menjadi 1 kolom */
+    }
+
+    /* Mengubah tabel menjadi format kartu */
+    .responsive-table thead {
+        display: none; /* Sembunyikan header tabel asli di mobile */
+    }
+
+    .responsive-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .responsive-table td {
+        display: block;
+        text-align: right; /* Pindahkan data ke kanan */
+        position: relative;
+        padding-left: 50%; /* Beri ruang untuk label */
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .responsive-table td:last-child {
+        border-bottom: none;
+    }
+
+    .responsive-table td::before {
+        content: attr(data-label); /* Ambil teks dari atribut data-label */
+        position: absolute;
+        left: 10px;
+        text-align: left;
+        font-weight: bold;
+        width: calc(50% - 20px);
+    }
+    
+    /* Atur ulang baris total agar tetap terlihat bagus */
+    .responsive-table .total-row td {
+        background-color: #f7f7f7;
+    }
+    .responsive-table .total-row td[colspan="2"] {
+        background-color: #e9e9e9;
+        font-size: 1.1em;
+        text-align: center;
+        padding-left: 10px;
+    }
+     .responsive-table .total-row td[colspan="2"]::before {
+        display: none; /* Sembunyikan label untuk sel total utama */
+    }
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Dashboard Assy Cap</h1>
+        <div class="header-buttons">
+            <button onclick="exportToExcel()" class="print-hide">Download Excel</button>
+            <button onclick="window.print()" class="print-hide">Print</button>
+        </div>
+    </div>
+    
+    <div class="form-input">
+        <div class="form-grid">
+            <div><label for="tanggal">Tanggal:</label><input type="date" id="tanggal" required></div>
+            <div><label for="shift">Shift:</label><select id="shift" required><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+            <div><label for="nama">Nama:</label><select id="nama" required><option value="">Pilih Nama...</option></select></div>
+        </div>
+        
+        <div class="part-entry">
+            <div><label for="nama_part">Nama Part:</label><select id="nama_part"><option value="">Pilih Part...</option></select></div>
+            <div><label for="jam_ke">Jam Ke-:</label><select id="jam_ke"><script>for(let i=1;i<=9;i++)document.write(`<option value="${i}">${i}</option>`)</script></select></div>
+            <div><label for="quantity">Quantity:</label><input type="number" id="quantity" min="0"></div>
+            <div><button type="button" id="add-part-btn">Tambah +</button></div>
+        </div>
+    </div>
+
+    <div id="parts-list-container">
+        <h3>Daftar Part untuk Disimpan</h3>
+        <div id="parts-list">
+            </div>
+        <button type="button" id="save-all-btn">Simpan Semua Data</button>
+    </div>
+
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
+    <div id="dashboard-area">
+        </div>
+</div>
+
+<script>
+    // ===================================================
+    // KONFIGURASI SUPABASE - GANTI DENGAN DATA ANDA
+    // ===================================================
+    const SUPABASE_URL = 'https://fbfvhcwisvlyodwvmpqg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZnZoY3dpc3ZseW9kd3ZtcHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY4MTQ2MzQsImV4cCI6MjA3MjM5MDYzNH0.mbn9B1xEr_8kmC2LOP5Jv5O7AEIK7Fa1gxrqJ91WNx4';
+    const { createClient } = supabase;
+    const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // === VARIABEL GLOBAL ===
+    let masterPartsData = [];
+    let stagedParts = []; // Array untuk menampung part yang akan disimpan
+
+    // === ELEMENT SELECTOR ===
+    const tanggalEl = document.getElementById('tanggal');
+    const shiftEl = document.getElementById('shift');
+    const namaEl = document.getElementById('nama');
+    const namaPartEl = document.getElementById('nama_part');
+    const jamKeEl = document.getElementById('jam_ke');
+    const quantityEl = document.getElementById('quantity');
+    const addPartBtn = document.getElementById('add-part-btn');
+    const partsListDiv = document.getElementById('parts-list');
+    const saveAllBtn = document.getElementById('save-all-btn');
+    const dashboardArea = document.getElementById('dashboard-area');
+
+    // === FUNGSI-FUNGSI ===
+
+    // Memuat data master ke dropdown
+    async function loadMasterData() {
+        const { data: people } = await db.from('master_people').select('id, nama').order('nama');
+        if(people) people.forEach(person => namaEl.add(new Option(person.nama, person.id)));
+        
+        const { data: parts } = await db.from('master_assy_cap').select('id, nama_part, part_number').order('nama_part');
+        if(parts) {
+            masterPartsData = parts;
+            parts.forEach(part => namaPartEl.add(new Option(part.nama_part, part.id)));
+        }
+    }
+    
+    // Menampilkan dashboard
+    async function displayDashboard(tanggal) {
+    dashboardArea.innerHTML = '<h3>Memuat data...</h3>';
+    
+    const { data, error } = await db.from('production_log')
+        .select(`*, master_people(nama), master_assy_cap(nama_part)`)
+        .eq('tanggal', tanggal)
+        .order('created_at');
+
+    if (error) {
+        dashboardArea.innerHTML = `<p style="color:red;">Gagal memuat data: ${error.message}</p>`;
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        dashboardArea.innerHTML = '<h3>Tidak ada data untuk tanggal ini.</h3>';
+        return;
+    }
+
+    const groupedData = data.reduce((acc, curr) => {
+        if (!curr.master_people) return acc;
+        const key = curr.master_people.nama;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(curr);
+        return acc;
+    }, {});
+
+    let html = '';
+    for (const personName in groupedData) {
+        const records = groupedData[personName];
+        const totals = Array(9).fill(0);
+        let grandTotal = 0;
+
+        html += `<h3>NAMA: ${personName}</h3>
+                 <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>NAMA PART</th>
+                            ${Array.from({length: 9}, (_, i) => `<th>${i+1}</th>`).join('')}
+                            <th>TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+        records.forEach((rec, index) => {
+            let rowTotal = 0;
+            // Penambahan data-label di sini
+            html += `<tr>
+                        <td data-label="NO">${index + 1}</td>
+                        <td data-label="NAMA PART">${rec.master_assy_cap ? rec.master_assy_cap.nama_part : 'N/A'}</td>`;
+            for (let i = 1; i <= 9; i++) {
+                const qty = rec[`qty_jam_${i}`] || 0;
+                html += `<td data-label="Jam ${i}">${qty > 0 ? qty : ''}</td>`;
+                totals[i - 1] += qty;
+                rowTotal += qty;
+            }
+            grandTotal += rowTotal;
+            html += `<td data-label="TOTAL">${rowTotal}</td></tr>`;
+        });
+        
+        html += `<tr class="total-row">
+                    <td data-label="Grand Total" colspan="2">TOTAL</td>
+                    ${totals.map((t, i) => `<td data-label="Total Jam ${i+1}">${t > 0 ? t : ''}</td>`).join('')}
+                    <td data-label="Grand Total Qty">${grandTotal}</td>
+                 </tr>`;
+        
+        html += `   </tbody>
+                 </table>`;
+    }
+    dashboardArea.innerHTML = html;
+}
+
+    // Menampilkan daftar part sementara
+    function renderStagedParts() {
+        partsListDiv.innerHTML = '';
+        if (stagedParts.length === 0) {
+            partsListDiv.innerHTML = '<p style="color:#777; font-style:italic;">Belum ada part yang ditambahkan.</p>';
+            return;
+        }
+        stagedParts.forEach((part, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'part-item';
+            itemDiv.innerHTML = `
+                <span><strong>${part.partName}</strong> (Jam: ${part.jamKe}, Qty: ${part.quantity})</span>
+                <button onclick="removeStagedPart(${index})">Hapus</button>
+            `;
+            partsListDiv.appendChild(itemDiv);
+        });
+    }
+
+    // Menghapus part dari daftar sementara
+    function removeStagedPart(index) {
+        stagedParts.splice(index, 1);
+        renderStagedParts();
+    }
+    
+    // Menyimpan semua part dalam daftar ke Supabase
+    async function saveAllParts() {
+        if (stagedParts.length === 0) {
+            alert('Daftar part masih kosong. Silakan tambahkan part terlebih dahulu.');
+            return;
+        }
+        if (!tanggalEl.value || !shiftEl.value || !namaEl.value) {
+            alert('Pastikan Tanggal, Shift, dan Nama sudah terisi!');
+            return;
+        }
+
+        const recordsToUpsert = stagedParts.map(part => ({
+            tanggal: tanggalEl.value,
+            shift: parseInt(shiftEl.value),
+            person_id: parseInt(namaEl.value),
+            part_id: part.partId,
+            [`qty_jam_${part.jamKe}`]: part.quantity
+        }));
+        
+        const { error } = await db.from('production_log').upsert(recordsToUpsert, {
+            onConflict: 'tanggal, shift, person_id, part_id'
+        });
+
+        if (error) {
+            alert('Gagal menyimpan data: ' + error.message);
+        } else {
+            alert('Semua data berhasil disimpan!');
+            stagedParts = []; // Kosongkan daftar
+            renderStagedParts(); // Perbarui tampilan
+            displayDashboard(tanggalEl.value); // Refresh dashboard
+        }
+    }
+
+    function exportToExcel() {
+        const tables = document.querySelectorAll('#dashboard-area table');
+        if (tables.length === 0) return alert('Tidak ada data untuk di-export!');
+        
+        const wb = XLSX.utils.book_new();
+        tables.forEach(table => {
+            const personName = table.previousElementSibling.innerText.replace('NAMA: ', '').trim();
+            const ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, personName.slice(0, 30));
+        });
+        XLSX.writeFile(wb, `Laporan Produksi ${tanggalEl.value}.xlsx`);
+    }
+
+    // === EVENT LISTENERS ===
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        tanggalEl.value = new Date().toISOString().split('T')[0];
+        loadMasterData();
+        displayDashboard(tanggalEl.value);
+        renderStagedParts();
+    });
+    
+    tanggalEl.addEventListener('change', () => displayDashboard(tanggalEl.value));
+
+    addPartBtn.addEventListener('click', () => {
+        const partId = parseInt(namaPartEl.value);
+        const jamKe = parseInt(jamKeEl.value);
+        const quantity = parseInt(quantityEl.value);
+
+        if (!partId || !quantity || quantity <= 0) {
+            alert('Pilih Nama Part dan isi Quantity dengan benar!');
+            return;
+        }
+        
+        const partData = masterPartsData.find(p => p.id === partId);
+        if (!partData) return alert('Data part tidak ditemukan!');
+
+        stagedParts.push({
+            partId: partId,
+            partName: partData.nama_part,
+            jamKe: jamKe,
+            quantity: quantity
+        });
+
+        renderStagedParts();
+
+        // Reset input untuk entri berikutnya
+        namaPartEl.value = '';
+        quantityEl.value = '';
+        namaPartEl.focus();
+    });
+
+    saveAllBtn.addEventListener('click', saveAllParts);
+</script>
+</body>
+</html>
