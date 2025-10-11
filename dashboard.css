@@ -198,7 +198,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
-    height: 500px; /* Tentukan tinggi tetap di sini */
+    height: 800px; /* Tentukan tinggi tetap di sini */
 }
 .chart-header {
     flex-shrink: 0; display: flex; justify-content: space-between;
